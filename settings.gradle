@@ -1,0 +1,4 @@
+include ':router-processor'
+include ':router-annotations'
+include ':app', ':router-gradle-plugin'
+rootProject.name = "AARouter"

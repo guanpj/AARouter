@@ -1,0 +1,34 @@
+apply plugin: 'maven'
+
+Properties globalProperties = new Properties()
+globalProperties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+
+def POM_URL = globalProperties.getProperty("POM_URL")
+def GROUP_ID = globalProperties.getProperty("GROUP_ID")
+def VERSION_NAME = globalProperties.getProperty("VERSION_NAME")
+
+Properties gradleProperties = new Properties()
+gradleProperties.load(project.file('gradle.properties').newDataInputStream())
+
+def POM_ARTIFACT_ID = gradleProperties.getProperty("POM_ARTIFACT_ID")
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(POM_URL)) {
+                pom.groupId = GROUP_ID
+                pom.artifactId = POM_ARTIFACT_ID
+                pom.version = VERSION_NAME
+            }
+
+            pom.whenConfigured { pom ->
+                pom.dependencies.forEach { dep ->
+                    if (dep.getVersion() == "unspecified") {
+                        dep.setGroupId(GROUP_ID)
+                        dep.setVersion(VERSION_NAME)
+                    }
+                }
+            }
+        }
+    }
+}
