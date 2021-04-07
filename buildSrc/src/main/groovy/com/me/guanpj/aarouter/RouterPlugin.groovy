@@ -1,5 +1,8 @@
 package com.me.guanpj.aarouter
 
+import com.android.build.api.transform.Transform
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.AppPlugin
 import groovy.json.JsonSlurper
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -7,6 +10,13 @@ import org.gradle.api.Project
 class RouterPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
+
+        if (project.plugins.hasPlugin(AppPlugin)) {
+            AppExtension appExtension = project.extensions.getByType(AppExtension)
+            Transform transform = new RouterMappingTransform()
+            appExtension.registerTransform(transform)
+        }
+
         if (project.extensions.findByName("kapt") != null) {
             project.extensions.findByName("kapt").arguments {
                 arg("root_project_dir", project.rootProject.projectDir.absolutePath)
@@ -18,6 +28,10 @@ class RouterPlugin implements Plugin<Project> {
             if (mappingFileDir.exists()) {
                 mappingFileDir.deleteDir()
             }
+        }
+
+        if (!project.plugins.hasPlugin(AppPlugin)) {
+            return
         }
 
         project.getExtensions().create("router", RouterExtension)
