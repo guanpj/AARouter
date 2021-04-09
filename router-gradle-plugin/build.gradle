@@ -2,11 +2,29 @@ apply plugin: 'groovy'
 
 repositories {
     jcenter()
+    google()
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        java {
+            srcDir "src/main/java"
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
 }
 
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation "com.android.tools.build:gradle:4.1.3"
 }
 
 apply plugin: 'maven'

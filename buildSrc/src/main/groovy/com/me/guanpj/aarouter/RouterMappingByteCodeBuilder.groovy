@@ -49,7 +49,7 @@ class RouterMappingByteCodeBuilder implements Opcodes {
         allMappingNames.each {
             mv.visitVarInsn(ALOAD, 0)
             mv.visitMethodInsn(INVOKESTATIC,
-                      "com/imooc/router/mapping/$it",
+                      "com/me/guanpj/aarouter/mapping/$it",
                        "get", "()Ljava/util/Map;", false)
             mv.visitMethodInsn(INVOKEINTERFACE,
                 "java/util/Map",

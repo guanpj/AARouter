@@ -5,4 +5,5 @@ import com.me.guanpj.aarouter.annotations.Destination
 
 @Destination(url = "router://page-kotlin", description = "kotlin page")
 class KotlinActivity: AppCompatActivity() {
+
 }
